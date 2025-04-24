@@ -70,6 +70,11 @@ const Login = () => {
       'https://github.com/login/oauth/authorize?scope=user:email&client_id=302129228f0d96055bee';
   };
 
+  const toTalkweb = () => {
+    window.location.href =
+      'http://it.dev-paas.talkweb.com.cn/idaas/login?client_id=1915247354921799681&response_type=code&redirect_uri=http://192.168.26.69:9222/v1/user/talkweb_callback';
+  };
+
   return (
     <div className={styles.loginPage}>
       <div className={styles.loginLeft}>
@@ -153,20 +158,22 @@ const Login = () => {
             </Button>
             {title === 'login' && (
               <>
-                {/* <Button
-                  block
-                  size="large"
-                  onClick={toGoogle}
-                  style={{ marginTop: 15 }}
-                >
-                  <div>
-                    <Icon
-                      icon="local:google"
-                      style={{ verticalAlign: 'middle', marginRight: 5 }}
-                    />
-                    Sign in with Google
-                  </div>
-                </Button> */}
+                {location.host === Domain && (
+                  <Button
+                    block
+                    size="large"
+                    onClick={toTalkweb}
+                    style={{ marginTop: 15 }}
+                  >
+                    <div className="flex items-center">
+                      <Icon
+                        icon="local:talkweb"
+                        style={{ verticalAlign: 'middle', marginRight: 5 }}
+                      />
+                      Sign in with Talkweb
+                    </div>
+                  </Button>
+                )}
                 {location.host === Domain && (
                   <Button
                     block

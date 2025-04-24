@@ -58,24 +58,29 @@ redis:
 #   factory: 'Tongyi-Qianwen'
 #   api_key: 'sk-xxxxxxxxxxxxx'
 #   base_url: ''
-# oauth:
-#   github:
-#     client_id: xxxxxxxxxxxxxxxxxxxxxxxxx
-#     secret_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#     url: https://github.com/login/oauth/access_token
-#   feishu:
-#     app_id: cli_xxxxxxxxxxxxxxxxxxx
-#     app_secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-#     app_access_token_url: https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal
-#     user_access_token_url: https://open.feishu.cn/open-apis/authen/v1/oidc/access_token
-#     grant_type: 'authorization_code'
-# authentication:
-#   client:
-#     switch: false
-#     http_app_key:
-#     http_secret_key:
-#   site:
-#     switch: false
+oauth:
+ talkweb:
+   client_id:
+   secret_key:
+   url: http://it.dev-paas.talkweb.com.cn/api
+   grant_type: authorization_code
+# github:
+#   client_id: xxxxxxxxxxxxxxxxxxxxxxxxx
+#   secret_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+#   url: https://github.com/login/oauth/access_token
+# feishu:
+#   app_id: cli_xxxxxxxxxxxxxxxxxxx
+#   app_secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+#   app_access_token_url: https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal
+#   user_access_token_url: https://open.feishu.cn/open-apis/authen/v1/oidc/access_token
+#   grant_type: 'authorization_code'
+authentication:
+ client:
+   switch: false
+   http_app_key:
+   http_secret_key:
+ site:
+   switch: false
 # permission:
 #   switch: false
 #   component: false

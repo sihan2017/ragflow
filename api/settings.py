@@ -54,6 +54,7 @@ AUTHENTICATION_CONF = None
 CLIENT_AUTHENTICATION = None
 HTTP_APP_KEY = None
 GITHUB_OAUTH = None
+TALKWEB_OAUTH = None
 FEISHU_OAUTH = None
 
 DOC_ENGINE = None
@@ -76,7 +77,7 @@ def init_settings():
     LLM_FACTORY = LLM.get("factory", "Tongyi-Qianwen")
     LLM_BASE_URL = LLM.get("base_url")
     try:
-        REGISTER_ENABLED = int(os.environ.get("REGISTER_ENABLED", "1"))
+        REGISTER_ENABLED = int(os.environ.get("REGISTER_ENABLED", "0"))
     except Exception:
         pass  
     
@@ -118,7 +119,7 @@ def init_settings():
         RAG_FLOW_SERVICE_NAME,
         {}).get("secret_key", str(date.today()))
 
-    global AUTHENTICATION_CONF, CLIENT_AUTHENTICATION, HTTP_APP_KEY, GITHUB_OAUTH, FEISHU_OAUTH
+    global AUTHENTICATION_CONF, CLIENT_AUTHENTICATION, HTTP_APP_KEY, GITHUB_OAUTH, FEISHU_OAUTH, TALKWEB_OAUTH
     # authentication
     AUTHENTICATION_CONF = get_base_config("authentication", {})
 
@@ -128,6 +129,7 @@ def init_settings():
         "switch", False)
     HTTP_APP_KEY = AUTHENTICATION_CONF.get("client", {}).get("http_app_key")
     GITHUB_OAUTH = get_base_config("oauth", {}).get("github")
+    TALKWEB_OAUTH = get_base_config("oauth", {}).get("talkweb")
     FEISHU_OAUTH = get_base_config("oauth", {}).get("feishu")
 
     global DOC_ENGINE, docStoreConn, retrievaler, kg_retrievaler
