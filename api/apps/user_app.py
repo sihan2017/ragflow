@@ -116,23 +116,6 @@ def login():
 
 @manager.route("/talkweb_callback", methods=["GET"])  # noqa: F821
 def talkweb_callback():
-    """
-    GitHub OAuth callback endpoint.
-    ---
-    tags:
-      - OAuth
-    parameters:
-      - in: query
-        name: code
-        type: string
-        required: true
-        description: Authorization code from GitHub.
-    responses:
-      200:
-        description: Authentication successful.
-        schema:
-          type: object
-    """
     import requests
     res = requests.get(
         settings.TALKWEB_OAUTH.get("url") + '/wutong-idaas-auth/auth/token',
@@ -144,8 +127,8 @@ def talkweb_callback():
         },
         headers={"Accept": "application/json"},
     )
-    print(res)
     res = res.json()
+    print(res)
     if "error" in res:
         return redirect("/?error=%s" % res["error_description"])
 
@@ -414,6 +397,7 @@ def user_info_from_talkweb(access_token):
         f"{settings.TALKWEB_OAUTH.get('url')}/wutong-idaas-auth/authz/oauth2/userinfo?access_token={access_token}", headers=headers
     )
     res_data = res.json()
+    print(res_data)
     user_info = res_data["data"]
     return user_info
 

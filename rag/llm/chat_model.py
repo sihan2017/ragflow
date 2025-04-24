@@ -111,7 +111,9 @@ class Base(ABC):
         # Implement exponential backoff retry strategy
         for attempt in range(self.max_retries):
             try:
+                logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}, Tools: {json.dumps(tools, ensure_ascii=False)}')
                 response = self.client.chat.completions.create(model=self.model_name, messages=history, tools=tools, **gen_conf)
+                # logging.info(f'LLM Response Data： {json.dumps(response.json(), ensure_ascii=False)}')
 
                 assistant_output = response.choices[0].message
                 if not ans and "tool_calls" not in assistant_output and "reasoning_content" in assistant_output:
@@ -142,8 +144,9 @@ class Base(ABC):
                     #         ans += LENGTH_NOTIFICATION_EN
                     #     return ans, tk_count + self.total_token_count(tool_response)
                     history.append({"role": "tool", "tool_call_id": tool_call.id, "content": str(tool_response)})
-
+                logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}, Tools: {json.dumps(tools, ensure_ascii=False)}')
                 final_response = self.client.chat.completions.create(model=self.model_name, messages=history, tools=tools, **gen_conf)
+                # logging.info(f'LLM Response Data： {json.dumps(response.json(), ensure_ascii=False)}')
                 assistant_output = final_response.choices[0].message
                 if "tool_calls" not in assistant_output and "reasoning_content" in assistant_output:
                     ans += "<think>" + ans + "</think>"
@@ -184,7 +187,9 @@ class Base(ABC):
         # Implement exponential backoff retry strategy
         for attempt in range(self.max_retries):
             try:
+                logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}')
                 response = self.client.chat.completions.create(model=self.model_name, messages=history, **gen_conf)
+                # logging.info(f'LLM Response Data： {json.dumps(response.json(), ensure_ascii=False)}')
 
                 if any([not response.choices, not response.choices[0].message, not response.choices[0].message.content]):
                     return "", 0
@@ -242,6 +247,7 @@ class Base(ABC):
         finish_completion = False
         final_tool_calls = {}
         try:
+            logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}, Tools: {json.dumps(tools, ensure_ascii=False)}')
             response = self.client.chat.completions.create(model=self.model_name, messages=history, stream=True, tools=tools, **gen_conf)
             while not finish_completion:
                 for resp in response:
@@ -314,7 +320,9 @@ class Base(ABC):
                                 #     return ans, total_tokens + self.total_token_count(tool_response)
                                 history.append({"role": "tool", "tool_call_id": tool_call.id, "content": str(tool_response)})
                             final_tool_calls = {}
+                            logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}, Tools: {json.dumps(tools, ensure_ascii=False)}')
                             response = self.client.chat.completions.create(model=self.model_name, messages=history, stream=True, tools=tools, **gen_conf)
+                            # logging.info(f'LLM Response Data： {json.dumps(response.json(), ensure_ascii=False)}')
                             continue
                         if finish_reason == "length":
                             if is_chinese(ans):
@@ -328,6 +336,7 @@ class Base(ABC):
                             break
                         yield ans
                         continue
+            # logging.info(f'LLM Response Data： {ans}')
 
         except openai.APIError as e:
             yield ans + "\n**ERROR**: " + str(e)
@@ -343,6 +352,7 @@ class Base(ABC):
         total_tokens = 0
         reasoning_start = False
         try:
+            logging.info(f'LLM Request Data：{json.dumps(history, ensure_ascii=False)}')
             response = self.client.chat.completions.create(model=self.model_name, messages=history, stream=True, **gen_conf)
             for resp in response:
                 if not resp.choices:
@@ -371,6 +381,7 @@ class Base(ABC):
                     else:
                         ans += LENGTH_NOTIFICATION_EN
                 yield ans
+            # logging.info(f'LLM Response Data： {ans}')
 
         except openai.APIError as e:
             yield ans + "\n**ERROR**: " + str(e)
